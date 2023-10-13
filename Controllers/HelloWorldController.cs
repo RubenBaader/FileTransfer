@@ -11,16 +11,46 @@ namespace FileTransfer.Controllers
     {
         private readonly string FilePath = "data.txt";
 
+        [HttpPost (Name = "UploadWorld")]
+        public async Task<IActionResult> UploadFile(IFormFile formFile)
+        {
+            try
+            {
+                if(formFile != null && formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(FilePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                    return Ok("File uploaded succesfully!");
+                }
+                else
+                {
+                    return BadRequest("No file uploaded");
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+
         [HttpGet(Name = "GetHelloWorld")]
         public async Task<IActionResult> GetHelloWorld()
         {
             try
             {
-                string FileData = await System.IO.File.ReadAllTextAsync(FilePath);
+                if(System.IO.File.Exists(FilePath))
+                {
+                    byte[] FileBytes = await System.IO.File.ReadAllBytesAsync(FilePath);
+                    string FileName = Path.GetFileName(FilePath);
 
-                var response = new {Hello = FileData };
-
-                return Ok(response);
+                    return File(FileBytes, "application/octet-stream", FileName);
+                }
+                else
+                {
+                    return NotFound("File not found");
+                }
             }
             catch(Exception ex)
             {
@@ -28,21 +58,6 @@ namespace FileTransfer.Controllers
             }
         }
 
-        [HttpPost (Name = "PostHelloWorld")]
-        public async Task<IActionResult> PostHelloWorld([FromBody] string Payload )
-        {
-            try
-            {
-                string Data = Payload.ToString();
 
-                await System.IO.File.WriteAllTextAsync( FilePath, Data );
-
-                return Ok("Data saved!");
-            }
-            catch(Exception ex)
-            {
-                return BadRequest($"Error: {ex.Message}");
-            }
-        }
     }
 }
