@@ -43,8 +43,32 @@ namespace FileTransfer.Controllers
             }
         }
 
+        [HttpGet ("list", Name = "ListFiles")]
+        public async Task<IActionResult> ListFiles()
+        {
+            try
+            { 
+                if(Directory.Exists(UploadFolder) )
+                {
+                    var FileNames = Directory.GetFiles(UploadFolder)
+                        .Select(Path.GetFileName)
+                        .ToArray();
 
-        [HttpGet(Name = "DownloadSingleFile")]
+                    return Ok(FileNames);
+                }
+                else
+                {
+                    // Upload folder will not always exist on first load
+                    return Ok(Array.Empty<string>);
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+        
+        [HttpGet("download/{fileName}", Name = "DownloadSingleFile")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
             //string UploadedFileName = "hello";
