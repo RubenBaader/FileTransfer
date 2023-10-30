@@ -9,9 +9,7 @@ namespace FileTransfer.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
-        //private string? UploadedFileName { get; set; }
         private readonly string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-        //private string UploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", UploadedFileName);
 
 
         [HttpPost ("upload", Name = "UploadSingleFile")]
@@ -44,7 +42,6 @@ namespace FileTransfer.Controllers
         }
 
         [HttpGet ("list", Name = "ListFiles")]
-        //public async Task<IActionResult> ListFiles()
         public IActionResult ListFiles()
         {
             try
@@ -73,7 +70,6 @@ namespace FileTransfer.Controllers
         [HttpGet("download/{fileName}", Name = "DownloadSingleFile")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
-            //string UploadedFileName = "hello";
             string FilePath = Path.Combine(UploadFolder, fileName);
             try
             {
