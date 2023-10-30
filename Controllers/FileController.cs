@@ -14,7 +14,7 @@ namespace FileTransfer.Controllers
         //private string UploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", UploadedFileName);
 
 
-        [HttpPost (Name = "UploadSingleFile")]
+        [HttpPost ("upload", Name = "UploadSingleFile")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
             try
@@ -43,8 +43,34 @@ namespace FileTransfer.Controllers
             }
         }
 
+        [HttpGet ("list", Name = "ListFiles")]
+        //public async Task<IActionResult> ListFiles()
+        public IActionResult ListFiles()
+        {
+            try
+            { 
+                // list all file names in folder, return empty array if no files exist
+                if(Directory.Exists(UploadFolder) )
+                {
+                    string?[] FileNames = Directory.GetFiles(UploadFolder)
+                        .Select(Path.GetFileName)
+                        .ToArray();
 
-        [HttpGet(Name = "DownloadSingleFile")]
+                    return Ok(FileNames);
+                }
+                else
+                {
+                    // Upload folder will not always exist on first load
+                    return Ok(Array.Empty<string>());
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
+        
+        [HttpGet("download/{fileName}", Name = "DownloadSingleFile")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
             //string UploadedFileName = "hello";
