@@ -33,12 +33,41 @@ namespace FileTransfer.Controllers
 
                 string base64Data = Convert.ToBase64String (fileBytes);
 
-                //return Ok(base64Data);
+                //return Ok(new
+                //{
+                //    name = encodeFile.FileName,
+                //    body = base64Data,
+                //});
                 return new JsonResult(base64Data);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost ("decode", Name = "DecodeSingleFile")]
+        public async Task<IActionResult> DecodeSingleFile ([FromBody] string base64Data)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(base64Data))
+                {
+                    return BadRequest("No base64 data provided.");
+                }
+
+                byte[] fileBytes = Convert.FromBase64String(base64Data);
+
+                string contentType = "application/any";
+
+                string fileName = "converted_file.txt";
+
+                return File(fileBytes, contentType, fileName);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
             }
         }
     }
