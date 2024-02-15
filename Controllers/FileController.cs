@@ -7,33 +7,40 @@ namespace FileTransfer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FilesController : ControllerBase
+    public class FileController : ControllerBase
     {
-        private readonly string UploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+        private readonly string storagePath;
 
+        public FileController()
+        {
+            this.storagePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-        [HttpPost ("upload", Name = "UploadSingleFile")]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+            if (!Directory.Exists(storagePath))
+            { 
+                Directory.CreateDirectory(storagePath);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> UploadFile(IFormFile file)
         {
             try
             {
-                if(file != null && file.Length > 0)
-                {
-                    if (!Directory.Exists(UploadFolder) )
-                        Directory.CreateDirectory(UploadFolder);
-
-                    string UploadedFileName = file.FileName;
-                    string UploadPath = Path.Combine(UploadFolder, UploadedFileName);
-                    using (var stream = new FileStream(UploadPath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                    return Ok($"File uploaded succesfully: {UploadedFileName}");
-                }
-                else
+                if (file == null || file.Length == 0)
                 {
                     return BadRequest("No file uploaded");
                 }
+
+                string fileName = file.FileName;
+                string uploadPath = Path.Combine(storagePath, fileName);
+
+                using (var stream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                return Ok($"File uploaded succesfully: {fileName}");
+
             }
             catch(Exception ex)
             {
@@ -41,15 +48,17 @@ namespace FileTransfer.Controllers
             }
         }
 
-        [HttpGet ("list", Name = "ListFiles")]
-        public IActionResult ListFiles()
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> ListFiles()
         {
             try
             { 
+                var files = new List<string>();
+
                 // list all file names in folder, return empty array if no files exist
-                if(Directory.Exists(UploadFolder) )
+                if(Directory.Exists(storagePath) )
                 {
-                    string?[] FileNames = Directory.GetFiles(UploadFolder)
+                    string[] FileNames = Directory.GetFiles(storagePath)
                         .Select(Path.GetFileName)
                         .ToArray();
 
@@ -57,7 +66,6 @@ namespace FileTransfer.Controllers
                 }
                 else
                 {
-                    // Upload folder will not always exist on first load
                     return Ok(Array.Empty<string>());
                 }
             }
@@ -67,10 +75,11 @@ namespace FileTransfer.Controllers
             }
         }
         
-        [HttpGet("download/{fileName}", Name = "DownloadSingleFile")]
+        [HttpGet]
+        [Route("download/{fileName}")]
         public async Task<IActionResult> DownloadFile(string fileName)
         {
-            string FilePath = Path.Combine(UploadFolder, fileName);
+            string FilePath = Path.Combine(storagePath, fileName);
             try
             {
                 if(System.IO.File.Exists(FilePath))

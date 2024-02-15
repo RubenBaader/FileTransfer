@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTransfer", "FileTransfer.csproj", "{FB89CF85-F927-4EBB-BA17-0C283D518258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Api", "FileTransfer.Api.csproj", "{FB89CF85-F927-4EBB-BA17-0C283D518258}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Web", "..\FileTransfer.Web\FileTransfer.Web.csproj", "{61937761-0771-4E72-9110-2012E7B493CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTransfer.Models", "..\FileTransfer.Models\FileTransfer.Models.csproj", "{03597219-5E1E-423F-BDE2-D16EC494E586}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61937761-0771-4E72-9110-2012E7B493CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61937761-0771-4E72-9110-2012E7B493CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61937761-0771-4E72-9110-2012E7B493CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61937761-0771-4E72-9110-2012E7B493CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03597219-5E1E-423F-BDE2-D16EC494E586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03597219-5E1E-423F-BDE2-D16EC494E586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03597219-5E1E-423F-BDE2-D16EC494E586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03597219-5E1E-423F-BDE2-D16EC494E586}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
