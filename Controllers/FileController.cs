@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FileTransfer.Models.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -22,24 +23,35 @@ namespace FileTransfer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> UploadFile(IFormFile file)
+        public async Task<ActionResult<FileDto>> UploadFile(IFormFile uploadFile)
         {
             try
             {
-                if (file == null || file.Length == 0)
+                if (uploadFile == null || uploadFile.Length == 0)
                 {
                     return BadRequest("No file uploaded");
                 }
 
-                string fileName = file.FileName;
-                string uploadPath = Path.Combine(storagePath, fileName);
+                FileDto file = new FileDto {
+                    FileName = uploadFile.FileName,
+                    FileSizeBytes = uploadFile.Length,
+                    FileType = uploadFile.ContentType,
+                    UploadDateTime = DateTime.Now,
+                    UploaderUserId = "Mom",
+                    FilePath = uploadFile.FileName,
+                    Checksum = "hunter2",
+                    Permissions = "Mom and Dad"
+                    };
+
+                //string fileName = uploadFile.FileName;
+                string uploadPath = Path.Combine(storagePath, file.FilePath);
 
                 using (var stream = new FileStream(uploadPath, FileMode.Create))
                 {
-                    await file.CopyToAsync(stream);
+                    await uploadFile.CopyToAsync(stream);
                 }
 
-                return Ok($"File uploaded succesfully: {fileName}");
+                return Ok($"File uploaded succesfully: {file.FileName} at {file.UploadDateTime}. Type: {file.FileType}");
 
             }
             catch(Exception ex)
@@ -49,7 +61,7 @@ namespace FileTransfer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<string>> ListFiles()
+        public ActionResult<IEnumerable<FileDto>> ListFiles()
         {
             try
             { 
