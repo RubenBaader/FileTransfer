@@ -1,7 +1,8 @@
 ﻿namespace FileTransfer.Api.Entities
 {
-    public class UploadFile
+    public class FileMetadata
     {
+        public int Id { get; set; }
         public string FileName { get; set; }
         public long FileSizeBytes { get; set; }
         public string FileType { get; set; }

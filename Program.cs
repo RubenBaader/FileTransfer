@@ -1,4 +1,7 @@
 
+using FileTransfer.Api.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace FileTransfer
 {
     public class Program
@@ -13,6 +16,11 @@ namespace FileTransfer
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Inject DB instance
+            builder.Services.AddDbContextPool<FileTransferDBContext>(options => 
+                options.UseSqlServer(builder.Configuration.GetConnectionString("FileTransferConnection"))
+            );
 
             var app = builder.Build();
 
