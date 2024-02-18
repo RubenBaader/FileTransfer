@@ -1,4 +1,5 @@
-﻿using FileTransfer.Models.Dtos;
+﻿using FileTransfer.Api.Repositories.Contracts;
+using FileTransfer.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,25 @@ namespace FileTransfer.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-        private readonly string storagePath;
+        private readonly IFileRepository fileRepository;
 
-        public FileController()
+
+        // < schedule for deletion
+        private readonly string storagePath;
+        // />
+
+        public FileController(IFileRepository fileRepository)
         {
+            this.fileRepository = fileRepository;
+
+            // < schedule for deletion
             this.storagePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
             if (!Directory.Exists(storagePath))
             { 
                 Directory.CreateDirectory(storagePath);
             }
+            // />
         }
 
         [HttpPost]
