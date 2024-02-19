@@ -1,4 +1,5 @@
-﻿using FileTransfer.Api.Repositories.Contracts;
+﻿using FileTransfer.Api.Entities;
+using FileTransfer.Api.Repositories.Contracts;
 using FileTransfer.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -42,24 +43,26 @@ namespace FileTransfer.Controllers
                     return BadRequest("No file uploaded");
                 }
 
+                FileMetadata metadata = await this.fileRepository.AddFile(uploadFile);
+
                 FileDto file = new FileDto {
-                    FileName = uploadFile.FileName,
-                    FileSizeBytes = uploadFile.Length,
-                    FileType = uploadFile.ContentType,
+                    FileName = metadata.FileName,
+                    FileSizeBytes = metadata.FileSizeBytes,
+                    FileType = metadata.FileType,
                     UploadDateTime = DateTime.Now,
                     UploaderUserId = "Mom",
-                    FilePath = uploadFile.FileName,
+                    FilePath = metadata.FileName,
                     Checksum = "hunter2",
                     Permissions = "Mom and Dad"
                     };
 
                 //string fileName = uploadFile.FileName;
-                string uploadPath = Path.Combine(storagePath, file.FilePath);
+                //string uploadPath = Path.Combine(storagePath, file.FilePath);
 
-                using (var stream = new FileStream(uploadPath, FileMode.Create))
-                {
-                    await uploadFile.CopyToAsync(stream);
-                }
+                //using (var stream = new FileStream(uploadPath, FileMode.Create))
+                //{
+                //    await uploadFile.CopyToAsync(stream);
+                //}
 
                 return Ok($"File uploaded succesfully: {file.FileName} at {file.UploadDateTime}. Type: {file.FileType}");
 

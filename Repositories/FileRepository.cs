@@ -16,6 +16,7 @@ namespace FileTransfer.Api.Repositories
         public async Task<FileMetadata> AddFile(IFormFile file)
         {
             Guid fileGuid = Guid.NewGuid();
+
             FileMetadata metadata = new FileMetadata
             {
                 FileGuid = fileGuid,
@@ -26,15 +27,21 @@ namespace FileTransfer.Api.Repositories
                 UploaderUserId = 1,
             };
 
-            var result = await fileTransferDBContext.Files.AddAsync(metadata);
-            await fileTransferDBContext.SaveChangesAsync();
-            return result.Entity;
+            FileBody fileBody = new FileBody();
+            fileBody.FileGuid = fileGuid;
+            using (var ms = new  MemoryStream())
+            {
+                await file.CopyToAsync(ms);
+                fileBody.Body = ms.ToArray();
+            }
 
-            //FileBody fileBody = new FileBody
-            //{
-            //    FileGuid = fileGuid,
-            //    Body = file.
-            //};
+
+            var metadataResult = await fileTransferDBContext.FileMetadata.AddAsync(metadata);
+            var bodyResult = await fileTransferDBContext.FileBody.AddAsync(fileBody);
+
+            await fileTransferDBContext.SaveChangesAsync();
+            return metadataResult.Entity;
+
         }
         public Task<FileMetadata> GetSingleFileMetadata(int fileId)
         {

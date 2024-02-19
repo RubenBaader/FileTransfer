@@ -1,5 +1,7 @@
 
 using FileTransfer.Api.Data;
+using FileTransfer.Api.Repositories;
+using FileTransfer.Api.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileTransfer
@@ -21,6 +23,8 @@ namespace FileTransfer
             builder.Services.AddDbContextPool<FileTransferDBContext>(options => 
                 options.UseSqlServer(builder.Configuration.GetConnectionString("FileTransferConnection"))
             );
+
+            builder.Services.AddScoped<IFileRepository, FileRepository>();
 
             var app = builder.Build();
 

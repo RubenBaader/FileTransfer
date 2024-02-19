@@ -10,7 +10,8 @@ namespace FileTransfer.Api.Data
                 
         }
 
-        public DbSet<FileMetadata> Files { get; set; }
+        public DbSet<FileMetadata> FileMetadata { get; set; }
+        public DbSet<FileBody> FileBody { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }
