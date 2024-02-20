@@ -1,12 +1,15 @@
 ﻿using FileTransfer.Api.Entities;
+using FileTransfer.Models.Dtos;
 
 namespace FileTransfer.Api.Repositories.Contracts
 {
     public interface IFileRepository
     {
         //upload file takes body + metadata
-        //public Task<FileMetadata> AddFileMetadata(FileMetadata fileMetadata);
-        //public Task<FileBody> AddFileBody(FileBody fileBody);
+        //extract file metadata
+        //extract file body
+        public FileMetadata ExtractMetadata(IFormFile file, Guid guid);
+        public Task<FileBody> ExtractFileBody(IFormFile file, Guid guid);
         public Task<FileMetadata> AddFile(IFormFile file);
         public Task<FileMetadata> GetSingleFileMetadata(int fileId);
         public Task<FileMetadata> GetAllFileMetadata(int userId);

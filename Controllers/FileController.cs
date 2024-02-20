@@ -34,7 +34,7 @@ namespace FileTransfer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<FileDto>> UploadFile(IFormFile uploadFile)
+        public async Task<ActionResult<FileMetadataDto>> UploadFile(IFormFile uploadFile)
         {
             try
             {
@@ -45,24 +45,17 @@ namespace FileTransfer.Controllers
 
                 FileMetadata metadata = await this.fileRepository.AddFile(uploadFile);
 
-                FileDto file = new FileDto {
+                //Convert to Dto
+                FileMetadataDto file = new FileMetadataDto
+                {
+                    Id = metadata.Id,
                     FileName = metadata.FileName,
                     FileSizeBytes = metadata.FileSizeBytes,
                     FileType = metadata.FileType,
-                    UploadDateTime = DateTime.Now,
-                    UploaderUserId = "Mom",
-                    FilePath = metadata.FileName,
-                    Checksum = "hunter2",
-                    Permissions = "Mom and Dad"
-                    };
+                    UploadDateTime = metadata.UploadDateTime,
+                    UserId = metadata.UserId,
+                };
 
-                //string fileName = uploadFile.FileName;
-                //string uploadPath = Path.Combine(storagePath, file.FilePath);
-
-                //using (var stream = new FileStream(uploadPath, FileMode.Create))
-                //{
-                //    await uploadFile.CopyToAsync(stream);
-                //}
 
                 return Ok($"File uploaded succesfully: {file.FileName} at {file.UploadDateTime}. Type: {file.FileType}");
 
@@ -74,7 +67,7 @@ namespace FileTransfer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FileDto>> ListFiles()
+        public ActionResult<IEnumerable<FileMetadataDto>> ListFiles()
         {
             try
             { 
