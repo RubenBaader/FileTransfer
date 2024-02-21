@@ -67,29 +67,26 @@ namespace FileTransfer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FileMetadataDto>> ListFiles()
+        [Route("{userId}/GetFiles")]
+        public async Task<ActionResult<IEnumerable<FileMetadata>>> ListFiles(int userId)
         {
             try
             { 
-                var files = new List<string>();
+                var files = await this.fileRepository.GetAllFileMetadata(userId);
 
-                // list all file names in folder, return empty array if no files exist
-                if(Directory.Exists(storagePath) )
+                if(files == null)
                 {
-                    string[] FileNames = Directory.GetFiles(storagePath)
-                        .Select(Path.GetFileName)
-                        .ToArray();
-
-                    return Ok(FileNames);
+                    return NotFound();
                 }
                 else
                 {
-                    return Ok(Array.Empty<string>());
+                    return Ok(files);
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                return BadRequest($"Error: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                "Error retrieving data from the database");
             }
         }
         

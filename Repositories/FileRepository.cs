@@ -2,6 +2,7 @@
 using FileTransfer.Api.Entities;
 using FileTransfer.Api.Repositories.Contracts;
 using FileTransfer.Models.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileTransfer.Api.Repositories
 {
@@ -56,15 +57,19 @@ namespace FileTransfer.Api.Repositories
             return fileBody;
         }
 
+
+        public async Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId)
+        {
+            var fileMetadata = await this.fileTransferDBContext.FileMetadata
+                                        .Where(x => x.UserId == userId).ToListAsync();
+            
+            return fileMetadata;
+        }
+
         public Task<FileMetadata> GetSingleFileMetadata(int fileId)
         {
             throw new NotImplementedException();
         }
-        public Task<FileMetadata> GetAllFileMetadata(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<FileBody> GetFileBody(int fileId)
         {
             throw new NotImplementedException();

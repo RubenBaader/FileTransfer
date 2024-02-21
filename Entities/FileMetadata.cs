@@ -9,6 +9,5 @@
         public string FileType { get; set; }
         public DateTime UploadDateTime { get; set; }
         public int UserId { get; set; }
-        //public string FilePath { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace FileTransfer.Api.Repositories.Contracts
         public Task<FileBody> ExtractFileBody(IFormFile file, Guid guid);
         public Task<FileMetadata> AddFile(IFormFile file);
         public Task<FileMetadata> GetSingleFileMetadata(int fileId);
-        public Task<FileMetadata> GetAllFileMetadata(int userId);
+        public Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId);
         public Task<FileBody> GetFileBody(int fileId);
     }
 }
