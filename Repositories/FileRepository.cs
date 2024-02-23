@@ -60,22 +60,26 @@ namespace FileTransfer.Api.Repositories
 
         public async Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId)
         {
-            var fileMetadata = await this.fileTransferDBContext.FileMetadata
-                                        .Where(x => x.UserId == userId).ToListAsync();
+            var dataList = await this.fileTransferDBContext.FileMetadata
+                                        .Where(f => f.UserId == userId).ToListAsync();
             
-            return fileMetadata;
+            return dataList;
         }
 
-        public Task<FileMetadata> GetSingleFileMetadata(int fileId)
+        public async Task<FileMetadata> GetSingleFileMetadata(string guidString)
         {
-            throw new NotImplementedException();
+            var data = await this.fileTransferDBContext.FileMetadata
+                        .SingleOrDefaultAsync(f => f.FileGuid.ToString() == guidString);
+
+            return data;
         }
-        public Task<FileBody> GetFileBody(int fileId)
+        public async Task<FileBody> GetFileBody(string guidString)
         {
-            throw new NotImplementedException();
+            var data = await this.fileTransferDBContext.FileBody
+                        .SingleOrDefaultAsync(b => b.FileGuid.ToString() == guidString);
+
+            return data;
         }
 
-
-        
     }
 }

@@ -91,23 +91,24 @@ namespace FileTransfer.Controllers
         }
         
         [HttpGet]
-        [Route("download/{fileName}")]
-        public async Task<IActionResult> DownloadFile(string fileName)
+        [Route("download/{guidString}")]
+        public async Task<IActionResult> DownloadFile(string guidString)
         {
-            string FilePath = Path.Combine(storagePath, fileName);
             try
             {
-                if(System.IO.File.Exists(FilePath))
-                {
-                    byte[] FileBytes = await System.IO.File.ReadAllBytesAsync(FilePath);
-                    string FileName = Path.GetFileName(FilePath);
+                var metaData = await fileRepository.GetSingleFileMetadata(guidString);
+                var body = await fileRepository.GetFileBody(guidString);
 
-                    return File(FileBytes, "application/octet-stream", FileName);
-                }
-                else
+                if(metaData == null || body == null)
                 {
-                    return NotFound($"File not found: {FilePath}");
+                    return NotFound();
                 }
+
+                byte[] FileBytes = body.Body;
+                string FileName = metaData.FileName;
+
+                return File(FileBytes, "application/octet-stream", FileName);
+
             }
             catch(Exception ex)
             {
