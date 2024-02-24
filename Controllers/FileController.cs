@@ -78,10 +78,8 @@ namespace FileTransfer.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    return Ok(files);
-                }
+                
+                return Ok(files);
             }
             catch(Exception)
             {
@@ -92,7 +90,7 @@ namespace FileTransfer.Controllers
         
         [HttpGet]
         [Route("download/{guid:Guid}")]
-        public async Task<IActionResult> DownloadFile(Guid guid)
+        public async Task<ActionResult<FileContentResult>> DownloadFile(Guid guid)
         {
             try
             {
