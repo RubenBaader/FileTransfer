@@ -1,13 +1,18 @@
-﻿namespace FileTransfer.Api.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FileTransfer.Api.Entities
 {
     public class FileMetadata
     {
-        public int Id { get; set; }
-        public Guid FileGuid { get; set; }
+        [Key]
+        public int UploadedFileId { get; set; }
         public string FileName { get; set; }
         public long FileSizeBytes { get; set; }
         public string FileType { get; set; }
         public DateTime UploadDateTime { get; set; }
-        public int UserId { get; set; }
+
+        [ForeignKey(nameof(UploadedFileId))]
+        public UploadedFile UploadedFile { get; set; }
     }
 }

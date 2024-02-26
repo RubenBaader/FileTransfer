@@ -16,7 +16,7 @@ namespace FileTransfer.Controllers
 
 
         // < schedule for deletion
-        private readonly string storagePath;
+        //private readonly string storagePath;
         // />
 
         public FileController(IFileRepository fileRepository)
@@ -24,12 +24,12 @@ namespace FileTransfer.Controllers
             this.fileRepository = fileRepository;
 
             // < schedule for deletion
-            this.storagePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+            //this.storagePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-            if (!Directory.Exists(storagePath))
-            { 
-                Directory.CreateDirectory(storagePath);
-            }
+            //if (!Directory.Exists(storagePath))
+            //{ 
+            //    Directory.CreateDirectory(storagePath);
+            //}
             // />
         }
 
@@ -48,12 +48,12 @@ namespace FileTransfer.Controllers
                 //Convert to Dto
                 FileMetadataDto file = new FileMetadataDto
                 {
-                    Id = metadata.Id,
+                    Id = -1,
                     FileName = metadata.FileName,
                     FileSizeBytes = metadata.FileSizeBytes,
                     FileType = metadata.FileType,
                     UploadDateTime = metadata.UploadDateTime,
-                    UserId = metadata.UserId,
+                    UserId = -1,
                 };
 
 
@@ -74,9 +74,9 @@ namespace FileTransfer.Controllers
             { 
                 var files = await this.fileRepository.GetAllFileMetadata(userId);
 
-                if(files == null)
+                if(files.Count() == 0)
                 {
-                    return NotFound();
+                    return NoContent();
                 }
                 
                 return Ok(files);

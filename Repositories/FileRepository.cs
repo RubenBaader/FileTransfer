@@ -34,12 +34,12 @@ namespace FileTransfer.Api.Repositories
         {
             FileMetadata metadata = new FileMetadata
             {
-                FileGuid = guid,
+                //FileGuid = guid,
                 FileName = file.FileName,
                 FileSizeBytes = file.Length,
                 FileType = file.ContentType,
                 UploadDateTime = DateTime.Now,
-                UserId = 1,
+                //UserId = 1,
             };
 
             return metadata;
@@ -47,7 +47,7 @@ namespace FileTransfer.Api.Repositories
         public async Task<FileBody> ExtractFileBody(IFormFile file, Guid guid)
         {
             FileBody fileBody = new FileBody();
-            fileBody.FileGuid = guid;
+            //fileBody.FileGuid = guid;
             using (var ms = new MemoryStream())
             {
                 await file.CopyToAsync(ms);
@@ -61,22 +61,30 @@ namespace FileTransfer.Api.Repositories
         public async Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId)
         {
             var dataList = await this.fileTransferDBContext.FileMetadata
-                                        .Where(f => f.UserId == userId).ToListAsync();
+                                .Include(f => f.UploadedFile)
+                                .Where(f => f.UploadedFile.UserId == userId).ToListAsync();
             
+            if (dataList.Count() == 0)
+            {
+                return Enumerable.Empty<FileMetadata>();
+            }
+
             return dataList;
         }
 
         public async Task<FileMetadata> GetSingleFileMetadata(Guid guid)
         {
             var data = await this.fileTransferDBContext.FileMetadata
-                        .SingleOrDefaultAsync(f => f.FileGuid == guid);
+                                .Include(f => f.UploadedFile)
+                                .SingleOrDefaultAsync(f => f.UploadedFile.Guid == guid);
 
             return data;
         }
         public async Task<FileBody> GetFileBody(Guid guid)
         {
             var data = await this.fileTransferDBContext.FileBody
-                        .SingleOrDefaultAsync(b => b.FileGuid == guid);
+                                .Include(f => f.UploadedFile)
+                                .SingleOrDefaultAsync(b => b.UploadedFile.Guid == guid);
 
             return data;
         }
