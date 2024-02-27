@@ -1,10 +1,7 @@
 ﻿using FileTransfer.Api.Entities;
 using FileTransfer.Api.Repositories.Contracts;
 using FileTransfer.Models.Dtos;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace FileTransfer.Controllers
 {
@@ -14,23 +11,9 @@ namespace FileTransfer.Controllers
     {
         private readonly IFileRepository fileRepository;
 
-
-        // < schedule for deletion
-        //private readonly string storagePath;
-        // />
-
         public FileController(IFileRepository fileRepository)
         {
             this.fileRepository = fileRepository;
-
-            // < schedule for deletion
-            //this.storagePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-
-            //if (!Directory.Exists(storagePath))
-            //{ 
-            //    Directory.CreateDirectory(storagePath);
-            //}
-            // />
         }
 
         [HttpPost]
@@ -89,21 +72,20 @@ namespace FileTransfer.Controllers
         }
         
         [HttpGet]
-        [Route("download/{guid:Guid}")]
-        public async Task<ActionResult<FileContentResult>> DownloadFile(Guid guid)
+        [Route("{guid:Guid}/download")]
+        public async Task<ActionResult> DownloadFile(Guid guid)
         {
             try
             {
-                var metaData = await fileRepository.GetSingleFileMetadata(guid);
-                var body = await fileRepository.GetFileBody(guid);
+                var file = await fileRepository.GetFile(guid);
 
-                if(metaData == null || body == null)
+                if(file == null)
                 {
                     return NotFound();
                 }
 
-                byte[] FileBytes = body.Body;
-                string FileName = metaData.FileName;
+                byte[] FileBytes = file.Body.Content;
+                string FileName = file.Metadata.FileName;
 
                 return File(FileBytes, "application/octet-stream", FileName);
 

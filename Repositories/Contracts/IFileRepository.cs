@@ -8,11 +8,11 @@ namespace FileTransfer.Api.Repositories.Contracts
         //upload file takes body + metadata
         //extract file metadata
         //extract file body
-        public FileMetadata ExtractMetadata(IFormFile file, Guid guid);
-        public Task<FileBody> ExtractFileBody(IFormFile file, Guid guid);
+        public FileMetadata ExtractMetadata(IFormFile file);
+        public Task<FileBody> ExtractFileBody(IFormFile file);
         public Task<FileMetadata> AddFile(IFormFile file);
         public Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId);
         public Task<FileMetadata> GetSingleFileMetadata(Guid guid);
-        public Task<FileBody> GetFileBody(Guid guid);
+        public Task<DBFile> GetFile(Guid guid);
     }
 }

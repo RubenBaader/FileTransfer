@@ -7,9 +7,9 @@ namespace FileTransfer.Api.Entities
     {
         [Key]
         public int UploadedFileId { get; set; }
-        public byte[] Body { get; set; }
+        public byte[] Content { get; set; }
 
         [ForeignKey(nameof(UploadedFileId))]
-        public UploadedFile UploadedFile { get; set; }
+        public DBFile UploadedFile { get; set; }
     }
 }

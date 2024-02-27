@@ -13,6 +13,6 @@ namespace FileTransfer.Api.Entities
         public DateTime UploadDateTime { get; set; }
 
         [ForeignKey(nameof(UploadedFileId))]
-        public UploadedFile UploadedFile { get; set; }
+        public DBFile UploadedFile { get; set; }
     }
 }

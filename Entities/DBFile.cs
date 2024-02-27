@@ -1,6 +1,6 @@
 ﻿namespace FileTransfer.Api.Entities
 {
-    public class UploadedFile
+    public class DBFile
     {
         public int Id { get; set; }
         public int UserId { get; set; }
