@@ -3,11 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Api", "FileTransfer.Api.csproj", "{FB89CF85-F927-4EBB-BA17-0C283D518258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Api", "FileTransfer.Api\FileTransfer.Api.csproj", "{0510EAD4-CC5C-42F1-AE05-7FE6F91F6A47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Web", "..\FileTransfer.Web\FileTransfer.Web.csproj", "{61937761-0771-4E72-9110-2012E7B493CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Models", "FileTransfer.Models\FileTransfer.Models.csproj", "{3C1940A7-4855-4005-A447-0C8610A0D7C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTransfer.Models", "..\FileTransfer.Models\FileTransfer.Models.csproj", "{03597219-5E1E-423F-BDE2-D16EC494E586}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileTransfer.Web", "FileTransfer.Web\FileTransfer.Web.csproj", "{7EC06C16-FF3A-499C-BC90-5A310E3C5CE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{222F20CE-697B-4AC4-8756-C4C250094B9D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		FileTransfer.UseCases.drawio.svg = FileTransfer.UseCases.drawio.svg
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +22,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB89CF85-F927-4EBB-BA17-0C283D518258}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61937761-0771-4E72-9110-2012E7B493CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61937761-0771-4E72-9110-2012E7B493CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61937761-0771-4E72-9110-2012E7B493CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61937761-0771-4E72-9110-2012E7B493CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03597219-5E1E-423F-BDE2-D16EC494E586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03597219-5E1E-423F-BDE2-D16EC494E586}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03597219-5E1E-423F-BDE2-D16EC494E586}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03597219-5E1E-423F-BDE2-D16EC494E586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0510EAD4-CC5C-42F1-AE05-7FE6F91F6A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0510EAD4-CC5C-42F1-AE05-7FE6F91F6A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0510EAD4-CC5C-42F1-AE05-7FE6F91F6A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0510EAD4-CC5C-42F1-AE05-7FE6F91F6A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C1940A7-4855-4005-A447-0C8610A0D7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C1940A7-4855-4005-A447-0C8610A0D7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C1940A7-4855-4005-A447-0C8610A0D7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C1940A7-4855-4005-A447-0C8610A0D7C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC06C16-FF3A-499C-BC90-5A310E3C5CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC06C16-FF3A-499C-BC90-5A310E3C5CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC06C16-FF3A-499C-BC90-5A310E3C5CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC06C16-FF3A-499C-BC90-5A310E3C5CE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
