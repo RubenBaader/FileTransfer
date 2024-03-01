@@ -1,4 +1,5 @@
 ﻿using FileTransfer.Api.Entities;
+using FileTransfer.Api.Extensions;
 using FileTransfer.Api.Repositories.Contracts;
 using FileTransfer.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -29,18 +30,10 @@ namespace FileTransfer.Controllers
                 FileMetadata metadata = await this.fileRepository.AddFile(uploadFile);
 
                 //Convert to Dto
-                FileMetadataDto file = new FileMetadataDto
-                {
-                    Id = -1,
-                    FileName = metadata.FileName,
-                    FileSizeBytes = metadata.FileSizeBytes,
-                    FileType = metadata.FileType,
-                    UploadDateTime = metadata.UploadDateTime,
-                    UserId = -1,
-                };
+                FileMetadataDto file = metadata.ConvertToDto();
 
 
-                return Ok($"File uploaded succesfully: {file.FileName} at {file.UploadDateTime}. Type: {file.FileType}");
+                return Ok(file);
 
             }
             catch(Exception ex)
@@ -56,13 +49,14 @@ namespace FileTransfer.Controllers
             try
             { 
                 var files = await this.fileRepository.GetAllFileMetadata(userId);
+                var dtos = files.ConvertToDto();
 
                 if(files.Count() == 0)
                 {
                     return NoContent();
                 }
                 
-                return Ok(files);
+                return Ok(dtos);
             }
             catch(Exception)
             {

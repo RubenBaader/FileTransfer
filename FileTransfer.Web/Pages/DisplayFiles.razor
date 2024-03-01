@@ -1,0 +1,24 @@
+﻿@page "/"
+@inherits DisplayFilesBase
+
+<PageTitle>Files</PageTitle>
+
+@if (Files == null && ErrorMessage == null)
+{
+    <h3>Loading...</h3>
+}
+else if (ErrorMessage != null)
+{
+    <h3>@ErrorMessage</h3>
+}
+else
+{
+    @if(Files.Count() > 0)
+    {
+        @foreach (var file in Files)
+        {
+            <h3>@file.FileName</h3>
+
+        }
+    }
+}

@@ -1,4 +1,6 @@
 using FileTransfer.Web;
+using FileTransfer.Web.Services;
+using FileTransfer.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -13,6 +15,8 @@ namespace FileTransfer.Web
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            builder.Services.AddScoped<IFileService, FileService>();
 
             await builder.Build().RunAsync();
         }
