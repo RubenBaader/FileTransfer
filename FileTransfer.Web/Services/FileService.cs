@@ -33,7 +33,7 @@ namespace FileTransfer.Web.Services
         {
             try
             {
-                var response = await this.httpClient.GetAsync($"api/file/{userId}/GetFiles");
+                var response = await this.httpClient.GetAsync($"api/File/{userId}/GetFiles");
 
                 if (response.IsSuccessStatusCode)
                 {

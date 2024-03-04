@@ -3,6 +3,7 @@ using FileTransfer.Api.Data;
 using FileTransfer.Api.Repositories;
 using FileTransfer.Api.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 namespace FileTransfer
 {
@@ -36,6 +37,13 @@ namespace FileTransfer
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(policy =>
+                policy.WithOrigins("http://localhost:7253", "https://localhost:7253")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
+
 
             app.UseAuthorization();
 

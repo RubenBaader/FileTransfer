@@ -13,11 +13,21 @@ else if (ErrorMessage != null)
 }
 else
 {
-    @if(Files.Count() > 0)
+    <h1>Your Files</h1>
+    @if(Files.Count() == 0)
+    {
+        <p>No files uploaded for user</p>
+    }
+    else
     {
         @foreach (var file in Files)
         {
             <h3>@file.FileName</h3>
+            <p>
+                Type: @file.FileType
+                &brvbar;
+                Size: @file.FileSizeBytes
+            </p>
 
         }
     }
