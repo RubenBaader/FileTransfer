@@ -1,0 +1,8 @@
+﻿@inherits UploadFileBase
+
+<h3>Upload a file</h3>
+<InputFile OnChange="LoadFiles" />
+@if (fileCount > 0)
+{
+    <span>Selected file: @fileName</span>
+}

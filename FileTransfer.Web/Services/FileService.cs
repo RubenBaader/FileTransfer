@@ -13,13 +13,40 @@ namespace FileTransfer.Web.Services
         {
                 this.httpClient = httpClient;
         }
-
-        public Task DeleteFile(Guid guid)
+        public async Task<FileMetadataDto> UploadFile(IFormFile formfile)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await httpClient.PostAsJsonAsync<IFormFile>("api/file", formfile);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default(FileMetadataDto);
+                    }
+
+                    return await response.Content.ReadFromJsonAsync<FileMetadataDto>();
+
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+            }
+            catch (Exception)
+            {
+                //log exception
+                throw;
+            }
         }
 
         public Task DownloadFile(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+        public Task DeleteFile(Guid guid)
         {
             throw new NotImplementedException();
         }
@@ -55,11 +82,6 @@ namespace FileTransfer.Web.Services
                 //log exception
                 throw;
             }
-        }
-
-        public Task UploadFile(IFormFile formfile)
-        {
-            throw new NotImplementedException();
         }
     }
 }
