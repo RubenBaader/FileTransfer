@@ -12,17 +12,17 @@ namespace FileTransfer.Web.Pages
 
         protected string fileName {  get; set; }
         protected int fileCount { get; set; }
-        protected IBrowserFile browserFile { get; set; }
+        public IBrowserFile browserFile { get; set; }
 
-        protected void LoadFiles(InputFileChangeEventArgs e)
+        public async void LoadFiles(InputFileChangeEventArgs e)
         {
-            if (e.FileCount > 0)
+            if (e.File != null)
             {
                 fileCount = e.FileCount;
                 browserFile = e.File;
                 fileName = browserFile.Name;
 
-                FileService.UploadFile(e.File as IFormFile);
+                await FileService.UploadFile(browserFile);
             }
         }
     }

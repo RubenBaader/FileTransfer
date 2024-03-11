@@ -1,7 +1,11 @@
 ﻿using FileTransfer.Models.Dtos;
 using FileTransfer.Web.Services.Contracts;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Net.Mime;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FileTransfer.Web.Services
 {
@@ -13,11 +17,28 @@ namespace FileTransfer.Web.Services
         {
                 this.httpClient = httpClient;
         }
-        public async Task<FileMetadataDto> UploadFile(IFormFile formfile)
+        public async Task<FileMetadataDto> UploadFile(IBrowserFile browserFile)
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync<IFormFile>("api/file", formfile);
+                var payload = new MultipartFormDataContent();
+
+                using var memoryStream = new MemoryStream();
+
+                await browserFile.OpenReadStream().CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                payload.Add(
+                    content: new StreamContent(memoryStream), 
+                    name: "file", 
+                    fileName: browserFile.Name
+                );
+                payload.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+
+                //payload.Headers.ContentType = new("application/octet-stream");
+
+
+                var response = await httpClient.PostAsync("api/file", payload);
 
                 if (response.IsSuccessStatusCode)
                 {
