@@ -34,6 +34,7 @@ namespace FileTransfer.Web.Services
                     fileName: browserFile.Name
                 );
                 payload.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
+                //payload.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
 
                 //payload.Headers.ContentType = new("application/octet-stream");
 
