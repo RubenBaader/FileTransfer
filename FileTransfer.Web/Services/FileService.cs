@@ -33,10 +33,6 @@ namespace FileTransfer.Web.Services
                     name: "file", 
                     fileName: browserFile.Name
                 );
-                payload.Headers.ContentType = new MediaTypeHeaderValue(browserFile.ContentType);
-                //payload.Headers.ContentType = new MediaTypeHeaderValue("multipart/form-data");
-
-                //payload.Headers.ContentType = new("application/octet-stream");
 
 
                 var response = await httpClient.PostAsync("api/file", payload);

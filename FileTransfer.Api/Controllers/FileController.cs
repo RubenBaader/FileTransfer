@@ -18,24 +18,18 @@ namespace FileTransfer.Controllers
         }
 
         [HttpPost]
-        //public async Task<ActionResult<FileMetadataDto>> UploadFile(IFormFile uploadFile)
         public async Task<ActionResult<FileMetadataDto>> UploadFile()
         {
             try
             {
-                using var ms = new MemoryStream();
-                await Request.Body.CopyToAsync(ms);
 
-                var uploadFile = new FormFile(ms, 0, ms.Length, null, "msTestName.txt")
-                {
-                    Headers = new HeaderDictionary(),
-                    ContentType = "text/plain"
-                };
+                var uploadFile = Request.Form.Files.FirstOrDefault();
+                
                 if (uploadFile == null || uploadFile.Length == 0)
                 {
                     return BadRequest("No file uploaded");
                 }
-
+                
                 FileMetadata metadata = await this.fileRepository.AddFile(uploadFile);
 
                 //Convert to Dto
