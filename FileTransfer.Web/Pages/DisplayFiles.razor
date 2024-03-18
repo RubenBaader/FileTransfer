@@ -28,6 +28,7 @@ else
                 &brvbar;
                 Size: @file.FileSizeBytes
             </p>
+            <button @onclick="() => DownloadFile(file.Guid)">Download</button>
 
         }
     }

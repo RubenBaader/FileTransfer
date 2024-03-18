@@ -11,7 +11,7 @@ namespace FileTransfer.Api.Repositories.Contracts
         public FileMetadata ExtractMetadata(IFormFile file);
         public Task<FileBody> ExtractFileBody(IFormFile file);
         public Task<FileMetadata> AddFile(IFormFile file);
-        public Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId);
+        public Task<IEnumerable<FileMetadataDto>> GetAllFileMetadata(int userId);
         public Task<FileMetadata> GetSingleFileMetadata(Guid guid);
         public Task<DBFile> GetFile(Guid guid);
     }

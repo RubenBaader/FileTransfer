@@ -15,6 +15,7 @@ namespace FileTransfer.Api.Extensions
                         FileSizeBytes = fileMetadata.FileSizeBytes,
                         FileType = fileMetadata.FileType,
                         UploadDateTime = fileMetadata.UploadDateTime,
+                        Guid = fileMetadata.UploadedFile.Guid,
                     }).ToList();
         }
 
@@ -27,6 +28,7 @@ namespace FileTransfer.Api.Extensions
                 FileSizeBytes = fileMetadata.FileSizeBytes,
                 FileType = fileMetadata.FileType,
                 UploadDateTime = fileMetadata.UploadDateTime,
+                Guid = fileMetadata.UploadedFile.Guid,
             };
         }
     }

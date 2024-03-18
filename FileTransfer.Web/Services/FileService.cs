@@ -60,9 +60,22 @@ namespace FileTransfer.Web.Services
             }
         }
 
-        public Task DownloadFile(Guid guid)
+        public async Task DownloadFile(Guid guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await httpClient.GetAsync($"api/file/{guid}/download");
+
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    return response.Content;
+                //}
+            }
+            catch (Exception)
+            {
+                //log exception
+                throw;
+            }
         }
         public Task DeleteFile(Guid guid)
         {

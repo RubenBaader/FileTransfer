@@ -1,6 +1,7 @@
 ﻿using FileTransfer.Api.Data;
 using FileTransfer.Api.Entities;
 using FileTransfer.Api.Repositories.Contracts;
+using FileTransfer.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace FileTransfer.Api.Repositories
@@ -18,7 +19,7 @@ namespace FileTransfer.Api.Repositories
         {
             DBFile file = new();
             file.Guid = Guid.NewGuid();
-            // Placeholder userId = 1
+            // Placeholder userId
             file.UserId = 1;
             file.Metadata = ExtractMetadata(formFile);
             file.Body = await ExtractFileBody(formFile);
@@ -35,7 +36,7 @@ namespace FileTransfer.Api.Repositories
             {
                 FileName = file.FileName,
                 FileSizeBytes = file.Length,
-                FileType = file.ContentType,
+                FileType = new FileInfo(file.FileName).Extension,
                 UploadDateTime = DateTime.Now,
             };
 
@@ -53,17 +54,33 @@ namespace FileTransfer.Api.Repositories
             return fileBody;
         }
 
-        public async Task<IEnumerable<FileMetadata>> GetAllFileMetadata(int userId)
+        public async Task<IEnumerable<FileMetadataDto>> GetAllFileMetadata(int userId)
         {
-            var dataList = await this.fileTransferDBContext.DBFiles
-                                .Include(f => f.Metadata)
-                                .Where(f => f.UserId == userId)
-                                .Select(f => f.Metadata).ToListAsync();
-            
+            //var dataList = await this.fileTransferDBContext.DBFiles
+            //                    .Include(f => f.Metadata)
+            //                    .Where(f => f.UserId == userId)
+            //                    .Select(f => f).ToListAsync();
+
+            var dataList = await (from file in this.fileTransferDBContext.DBFiles
+                                  join metadata in this.fileTransferDBContext.FileMetadata
+                                  on file.Id equals metadata.UploadedFileId
+                                  where file.UserId == userId
+                                  select new FileMetadataDto
+                                  {
+                                      Id = file.Id,
+                                      FileName = metadata.FileName,
+                                      FileSizeBytes = metadata.FileSizeBytes,
+                                      FileType = metadata.FileType,
+                                      UploadDateTime = metadata.UploadDateTime,
+                                      Guid = file.Guid,
+                                  }).ToListAsync();
+
             if (dataList.Count() == 0)
             {
-                return Enumerable.Empty<FileMetadata>();
+                return Enumerable.Empty<FileMetadataDto>();
             }
+
+            
 
             return dataList;
         }

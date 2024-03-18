@@ -52,14 +52,14 @@ namespace FileTransfer.Controllers
             try
             { 
                 var files = await this.fileRepository.GetAllFileMetadata(userId);
-                var dtos = files.ConvertToDto();
+                //var dtos = files.ConvertToDto();
 
                 if(files.Count() == 0)
                 {
                     return NoContent();
                 }
                 
-                return Ok(dtos);
+                return Ok(files);
             }
             catch(Exception)
             {

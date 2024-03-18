@@ -15,6 +15,7 @@ namespace FileTransfer.Web.Pages
         {
             try
             {
+                //get files for user - here hardcoded to test id
                 Files = await FileService.GetFiles(1);
             }
             catch (Exception ex)
@@ -23,9 +24,9 @@ namespace FileTransfer.Web.Pages
             }
         }
 
-        protected async Task DownloadFile (int id)
+        protected async Task DownloadFile (Guid guid)
         {
-
+            await FileService.DownloadFile(guid);
         }
         protected async Task DeleteFile (int id)
         {
