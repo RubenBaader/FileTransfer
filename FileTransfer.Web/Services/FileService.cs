@@ -60,16 +60,23 @@ namespace FileTransfer.Web.Services
             }
         }
 
-        public async Task DownloadFile(Guid guid)
+        public async Task<Stream> DownloadFile(Guid guid)
         {
             try
             {
                 var response = await httpClient.GetAsync($"api/file/{guid}/download");
 
-                //if (response.IsSuccessStatusCode)
-                //{
-                //    return response.Content;
-                //}
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStreamAsync();
+                    
+                    return content;
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
             }
             catch (Exception)
             {

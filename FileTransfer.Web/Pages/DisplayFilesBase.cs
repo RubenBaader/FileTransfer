@@ -1,6 +1,8 @@
 ﻿using FileTransfer.Models.Dtos;
 using FileTransfer.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.IO;
 
 namespace FileTransfer.Web.Pages
 {
@@ -8,8 +10,10 @@ namespace FileTransfer.Web.Pages
     {
         [Inject]
         public IFileService FileService { get; set; }
+        [Inject]
+        public IJSRuntime JS { get; set; }
         public IEnumerable<FileMetadataDto> Files { get; set; }
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,7 +30,12 @@ namespace FileTransfer.Web.Pages
 
         protected async Task DownloadFile (Guid guid)
         {
-            await FileService.DownloadFile(guid);
+            var fileStream = await FileService.DownloadFile(guid);
+            var fileName = "yestytest.txt";
+
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
         protected async Task DeleteFile (int id)
         {

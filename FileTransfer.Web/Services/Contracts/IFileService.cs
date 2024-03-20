@@ -7,7 +7,7 @@ namespace FileTransfer.Web.Services.Contracts
 {
     public interface IFileService
     {
-        public Task DownloadFile(Guid guid);
+        public Task<Stream> DownloadFile(Guid guid);
         public Task<FileMetadataDto> UploadFile(IBrowserFile browserFile);
         public Task DeleteFile(Guid guid);
         public Task<IEnumerable<FileMetadataDto>> GetFiles(int userId);
