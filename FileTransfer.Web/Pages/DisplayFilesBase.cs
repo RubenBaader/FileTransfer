@@ -28,10 +28,10 @@ namespace FileTransfer.Web.Pages
             }
         }
 
-        protected async Task DownloadFile (Guid guid)
+        protected async Task DownloadFile (Guid guid, string name)
         {
             var fileStream = await FileService.DownloadFile(guid);
-            var fileName = "yestytest.txt";
+            var fileName = name;
 
             using var streamRef = new DotNetStreamReference(stream: fileStream);
 
