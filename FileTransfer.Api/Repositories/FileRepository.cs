@@ -56,11 +56,6 @@ namespace FileTransfer.Api.Repositories
 
         public async Task<IEnumerable<FileMetadataDto>> GetAllFileMetadata(int userId)
         {
-            //var dataList = await this.fileTransferDBContext.DBFiles
-            //                    .Include(f => f.Metadata)
-            //                    .Where(f => f.UserId == userId)
-            //                    .Select(f => f).ToListAsync();
-
             var dataList = await (from file in this.fileTransferDBContext.DBFiles
                                   join metadata in this.fileTransferDBContext.FileMetadata
                                   on file.Id equals metadata.UploadedFileId
