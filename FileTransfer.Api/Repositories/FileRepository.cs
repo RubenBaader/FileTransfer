@@ -1,5 +1,6 @@
 ﻿using FileTransfer.Api.Data;
 using FileTransfer.Api.Entities;
+using FileTransfer.Api.Extensions;
 using FileTransfer.Api.Repositories.Contracts;
 using FileTransfer.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace FileTransfer.Api.Repositories
 
         public async Task<FileMetadata> AddFile(IFormFile formFile)
         {
-            DBFile file = new();
+            var file = new DBFile();
             file.Guid = Guid.NewGuid();
             // Placeholder userId
             file.UserId = 1;
@@ -98,5 +99,27 @@ namespace FileTransfer.Api.Repositories
             return data;
         }
 
+        public async Task<FileMetadataDto> DeleteFile(Guid guid)
+        {
+            var file = await this.fileTransferDBContext.DBFiles
+                                .Include(f => f.Metadata)
+                                .Include(f => f.Body)
+                                .SingleOrDefaultAsync(f => f.Guid == guid);
+
+            var receipt = new FileMetadataDto();
+
+            if (file != null)
+            {
+                this.fileTransferDBContext.FileBody.Remove(file.Body);
+                this.fileTransferDBContext.FileMetadata.Remove(file.Metadata);
+                this.fileTransferDBContext.DBFiles.Remove(file);
+
+                await this.fileTransferDBContext.SaveChangesAsync();
+
+                receipt = file.Metadata.ConvertToDto();
+            }
+
+            return receipt;
+        }
     }
 }

@@ -93,6 +93,26 @@ namespace FileTransfer.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{guid:Guid}/delete")]
+        public async Task<ActionResult> DeleteFile (Guid guid)
+        {
+            try
+            {
+                var metadata = await this.fileRepository.DeleteFile(guid);
 
+                if (metadata == null || metadata.FileName == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(metadata);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

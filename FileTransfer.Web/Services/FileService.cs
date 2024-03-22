@@ -84,9 +84,29 @@ namespace FileTransfer.Web.Services
                 throw;
             }
         }
-        public Task DeleteFile(Guid guid)
+        public async Task<FileMetadataDto> DeleteFile(Guid guid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await httpClient.DeleteAsync($"api/file/{guid}/delete");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<FileMetadataDto>();
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+            }
+            catch (Exception)
+            {
+                //log exception
+                throw;
+            }
+            
+            
         }
 
         public Task<FileMetadataDto> GetFile(Guid guid)

@@ -19,8 +19,7 @@ namespace FileTransfer.Web.Pages
         {
             try
             {
-                //get files for user - here hardcoded to test id
-                Files = await FileService.GetFiles(1);
+                await UpdatePage();
             }
             catch (Exception ex)
             {
@@ -37,9 +36,22 @@ namespace FileTransfer.Web.Pages
 
             await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
-        protected async Task DeleteFile (int id)
+        protected async Task DeleteFile (Guid guid)
         {
+            try
+            {
+                await FileService.DeleteFile(guid);
+                await UpdatePage();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
+        }
 
+        protected async Task UpdatePage()
+        {
+            Files = await FileService.GetFiles(1);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace FileTransfer.Web.Services.Contracts
     {
         public Task<Stream> DownloadFile(Guid guid);
         public Task<FileMetadataDto> UploadFile(IBrowserFile browserFile);
-        public Task DeleteFile(Guid guid);
+        public Task<FileMetadataDto> DeleteFile(Guid guid);
         public Task<IEnumerable<FileMetadataDto>> GetFiles(int userId);
         public Task<FileMetadataDto> GetFile(Guid guid);
     }
