@@ -13,6 +13,8 @@ namespace FileTransfer.Web.Services
     {
         private readonly HttpClient httpClient;
 
+        public event Action OnFileCountChanged;
+
         public FileService(HttpClient httpClient)
         {
                 this.httpClient = httpClient;
@@ -105,8 +107,6 @@ namespace FileTransfer.Web.Services
                 //log exception
                 throw;
             }
-            
-            
         }
 
         public Task<FileMetadataDto> GetFile(Guid guid)
@@ -140,6 +140,11 @@ namespace FileTransfer.Web.Services
                 //log exception
                 throw;
             }
+        }
+
+        public void RaiseEventOnFileCountChanged()
+        {
+            OnFileCountChanged?.Invoke();
         }
     }
 }

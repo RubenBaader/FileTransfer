@@ -19,12 +19,18 @@ namespace FileTransfer.Web.Pages
         {
             try
             {
+                FileService.OnFileCountChanged += FileCountChanged;
                 await UpdatePage();
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
+        }
+
+        protected async void FileCountChanged()
+        {
+            await UpdatePage();
         }
 
         protected async Task DownloadFile (Guid guid, string name)
