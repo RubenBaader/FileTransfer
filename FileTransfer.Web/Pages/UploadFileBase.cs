@@ -1,7 +1,6 @@
 ﻿using FileTransfer.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 
 namespace FileTransfer.Web.Pages
 {
@@ -23,7 +22,12 @@ namespace FileTransfer.Web.Pages
                 fileName = browserFile.Name;
 
                 await FileService.UploadFile(browserFile);
+                NotifyFileChange();
             }
+        }
+        private void NotifyFileChange()
+        {
+            FileService.RaiseEventOnFileCountChanged();
         }
     }
 }

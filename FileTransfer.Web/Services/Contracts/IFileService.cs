@@ -12,5 +12,8 @@ namespace FileTransfer.Web.Services.Contracts
         public Task<FileMetadataDto> DeleteFile(Guid guid);
         public Task<IEnumerable<FileMetadataDto>> GetFiles(int userId);
         public Task<FileMetadataDto> GetFile(Guid guid);
+
+        public event Action OnFileCountChanged;
+        void RaiseEventOnFileCountChanged();
     }
 }
