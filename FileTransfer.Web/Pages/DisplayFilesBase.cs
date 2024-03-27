@@ -31,6 +31,7 @@ namespace FileTransfer.Web.Pages
         protected async void FileCountChanged()
         {
             await UpdatePage();
+            StateHasChanged();
         }
 
         protected async Task DownloadFile (Guid guid, string name)
